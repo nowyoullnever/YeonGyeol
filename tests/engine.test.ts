@@ -15,7 +15,7 @@ describe("Connections engine", () => {
     expect(result.submission).toMatchObject({ kind: "correct", groupId: "seasons" });
     expect(result.progress.solvedGroupIds).toEqual(["seasons"]);
   });
-  it("reports one-away mistakes and loses after four mistakes", () => {
+  it("reports one-away attempts without ending the puzzle", () => {
     let progress = newProgress(defaultPuzzle, () => .5);
     const near = [wordId("seasons", 0), wordId("seasons", 1), wordId("seasons", 2), wordId("colors", 0)];
     for (let count = 0; count < 4; count += 1) {
@@ -24,7 +24,7 @@ describe("Connections engine", () => {
       expect(result.submission).toMatchObject({ kind: "incorrect", oneAway: true });
       progress = result.progress;
     }
-    expect(progress.status).toBe("lost");
-    expect(progress.mistakesRemaining).toBe(0);
+    expect(progress.status).toBe("playing");
+    expect(progress.selectedWordIds).toEqual([]);
   });
 });

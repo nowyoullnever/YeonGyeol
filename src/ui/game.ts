@@ -1,4 +1,4 @@
-import { availableWordIds, clearSelection, shuffleAvailable, submitSelection, toggleWord, wordId } from "../game/engine";
+import { availableWordIds, clearSelection, shuffleAvailable, submitSelection, toggleWord } from "../game/engine";
 import { loadProgress, saveProgress } from "../game/storage";
 import type { GameProgress, Puzzle } from "../game/types";
 import { puzzles } from "../data/puzzles";
@@ -16,14 +16,13 @@ export const mountGame = (root: HTMLElement, puzzle: Puzzle, choosePuzzle: (id: 
   let notice = "";
   const persist = () => saveProgress(puzzle, progress);
   const render = () => {
-    const solved = progress.status === "lost" ? puzzle.groups : puzzle.groups.filter((group) => progress.solvedGroupIds.includes(group.id));
+    const solved = puzzle.groups.filter((group) => progress.solvedGroupIds.includes(group.id));
     const available = progress.status === "playing" ? availableWordIds(puzzle, progress) : [];
     root.innerHTML = `
       <header><h1>연결!</h1><p>네 단어씩, 네 개의 연결을 찾아보세요.</p></header>
       <section class="game" aria-label="${puzzle.title}">
         <p class="puzzle-title">#${puzzle.id} ${puzzle.title}</p>
         <div class="puzzle-board ${shake ? "shake" : ""}" aria-label="연결 단어 보드"></div>
-        <p class="mistakes" aria-label="남은 실수 ${progress.mistakesRemaining}회">남은 실수 <span>${"● ".repeat(progress.mistakesRemaining).trim() || "없음"}</span></p>
         <p class="notice" role="status">${notice}</p>
         <div class="game-controls">
           <button type="button" data-action="shuffle" ${progress.status !== "playing" ? "disabled" : ""}>섞기</button>
@@ -31,7 +30,6 @@ export const mountGame = (root: HTMLElement, puzzle: Puzzle, choosePuzzle: (id: 
           <button type="button" class="commit" data-action="submit" ${progress.selectedWordIds.length !== 4 || progress.status !== "playing" ? "disabled" : ""}>제출</button>
         </div>
         ${progress.status === "won" ? '<p class="outcome">연결 완료!</p>' : ""}
-        ${progress.status === "lost" ? '<p class="outcome">다음에는 연결할 수 있을 거예요.</p>' : ""}
         <button type="button" class="other-games" data-action="picker">다른 게임 보기</button>
       </section>`;
     const board = root.querySelector<HTMLDivElement>(".puzzle-board")!;

@@ -26,7 +26,6 @@ header p { margin: 0 0 28px; color: var(--muted); font-size: .95rem; }
 .solved-group strong { font-weight: 700; }
 .solved-group span { font-size: clamp(.72rem, 2.7vw, 1rem); overflow-wrap: anywhere; }
 .rose { background: var(--rose); }.lime { background: var(--lime); }.blue { background: var(--blue); }.ochre { background: var(--ochre); }
-.mistakes { min-height: 1.5em; margin: 18px 0 5px; font-size: .9rem; }.mistakes span { letter-spacing: .16em; white-space: nowrap; }
 .notice { min-height: 1.6em; margin: 0 0 12px; font-size: .875rem; }.outcome { margin: 22px 0 0; font-weight: 700; font-size: 1.1rem; }
 .game-controls { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }.commit { font-weight: 700; }.other-games { margin-top: 26px; }
 .game-picker { width: min(calc(100vw - 32px), 420px); padding: 30px 32px; color: var(--text); background: var(--surface); border: 1px solid var(--border); border-radius: 0; text-align: center; }

@@ -5,7 +5,14 @@ const keyFor = (puzzleId: string) => `yeongyeol:puzzle:${puzzleId}`;
 export const loadProgress = (puzzle: Puzzle): GameProgress => {
   try {
     const saved = JSON.parse(localStorage.getItem(keyFor(puzzle.id)) ?? "null") as GameProgress | null;
-    if (saved && Array.isArray(saved.solvedGroupIds) && Array.isArray(saved.wordOrder) && Array.isArray(saved.selectedWordIds) && typeof saved.mistakesRemaining === "number" && ["playing", "won", "lost"].includes(saved.status)) return saved;
+    if (saved && Array.isArray(saved.solvedGroupIds) && Array.isArray(saved.wordOrder) && Array.isArray(saved.selectedWordIds) && ["playing", "won", "lost"].includes(saved.status)) {
+      return {
+        solvedGroupIds: saved.solvedGroupIds,
+        wordOrder: saved.wordOrder,
+        selectedWordIds: saved.selectedWordIds,
+        status: saved.status === "won" ? "won" : "playing"
+      };
+    }
   } catch { /* invalid saved state starts a new game */ }
   return newProgress(puzzle);
 };

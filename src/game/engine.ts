@@ -11,7 +11,7 @@ export const shuffled = <T>(items: readonly T[], random = Math.random): T[] => {
   return result;
 };
 export const newProgress = (puzzle: Puzzle, random = Math.random): GameProgress => ({
-  solvedGroupIds: [], mistakesRemaining: 4, status: "playing", wordOrder: shuffled(allWordIds(puzzle), random), selectedWordIds: []
+  solvedGroupIds: [], status: "playing", wordOrder: shuffled(allWordIds(puzzle), random), selectedWordIds: []
 });
 export const isSolved = (progress: GameProgress, groupId: string) => progress.solvedGroupIds.includes(groupId);
 export const availableWordIds = (puzzle: Puzzle, progress: GameProgress) => progress.wordOrder.filter((id) => !progress.solvedGroupIds.some((groupId) => id.startsWith(`${groupId}:`)));
@@ -40,7 +40,5 @@ export const submitSelection = (puzzle: Puzzle, progress: GameProgress): { progr
     return { progress: { ...progress, solvedGroupIds, status, selectedWordIds: [] }, submission: { kind: "correct", groupId: correct.id } };
   }
   const oneAway = puzzle.groups.some((group) => group.words.filter((_, index) => selected.has(wordId(group.id, index))).length === 3);
-  const mistakesRemaining = progress.mistakesRemaining - 1;
-  const status = mistakesRemaining === 0 ? "lost" : "playing";
-  return { progress: { ...progress, mistakesRemaining, status, selectedWordIds: [] }, submission: { kind: "incorrect", oneAway, mistakesRemaining, status } };
+  return { progress: { ...progress, selectedWordIds: [] }, submission: { kind: "incorrect", oneAway } };
 };
